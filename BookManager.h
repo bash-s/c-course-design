@@ -1,7 +1,7 @@
 #pragma once
 #ifndef BOOKMANAGER_H
 #define BOOKMANAGER_H
-const int MAX = 1;//以一本为例
+const int MAX = 10;//涔︾殑鏈暟
 #include<string>
 struct Book;
 struct BookStorage;
@@ -11,8 +11,8 @@ struct Book
 	std::string Book_Name;
 	std::string Book_Author;
 	std::string Book_ISBN;
-	unsigned int Book_Price;
-	bool is_borrowed;
+	int Book_Price;
+    int Book_Number_In_Storage;
 };
 struct BookStorage
 {
@@ -21,12 +21,14 @@ struct BookStorage
 class BookManager
 {
 public:
-	void Add_Book(BookStorage* bookstorage);
-	void Display_Info(unsigned int n,BookStorage* bookstorage);
-	bool Book_is_exist_1(std::string Name, BookStorage* bookstorage);
-	bool Book_is_exist_2(std::string ISBN, BookStorage* bookstorage);
-	unsigned int Get_Book_Number(std::string Name, BookStorage* bookstorage);
-	void Borrow_Book(unsigned int n,BookStorage* bookstorage);
-	void Return_Book(unsigned int n,BookStorage* bookstorage);
+	void Add_Book(int Book_Number,BookStorage* bookstorage);
+	void Display_Info(int n,BookStorage* bookstorage);
+	bool Book_is_exist(std::string Input, BookStorage* bookstorage);
+	int Get_Book_SerialNumber(std::string Name, BookStorage* bookstorage);
+	void Borrow_Book( int n,BookStorage* bookstorage);
+	void Return_Book(int n, BookStorage* bookstorage);
+	int Get_Storage_Number(BookStorage* bookstorage);
+private:
+	std::string PassWord;
 };
 #endif 
