@@ -1,45 +1,90 @@
 #include"BookManager.h"
 #include<string>
 #include<iostream>
-#include<stdexcept>
 using namespace std;
 int main(void)
 {
-	BookManager* bm = new BookManager;//¿ª±Ù¿Õ¼äÎ¬»¤
-	BookStorage* bs = new BookStorage;//¿ª±Ù¿Õ¼äÎ¬»¤
-	cout << "ÊäÈëÊéµÄÐÅÏ¢" << endl;
-	bm->Add_Book(bs);
-	string input{};
-	bool is_want_borrow = 0;
-	bool is_want_return = 0;
-	cout << "ÊäÈëÊéÃû£¬Ïë½èÊéÊäÈë1£¬²»ÏëÊäÈë0,»¹ÊéÍ¬Àí" << endl;
-	cout << "ÊéÃû/ISBN:";
-	cin >> input;
-	cout << "½èÊé:";
-	cin >> is_want_borrow;
-	cout << "»¹Êé:";
-	cin >> is_want_return;
-	if (bm->Book_is_exist_1(input, bs) || bm->Book_is_exist_2(input, bs))
+	BookManager* bm = new BookManager;//å¼€è¾Ÿç©ºé—´ç»´æŠ¤
+	BookStorage* bs = new BookStorage;//å¼€è¾Ÿç©ºé—´ç»´æŠ¤
+	int choice = 0;
+	string pw{};
+	while (1)
 	{
-		unsigned int n=bm->Get_Book_Number(input, bs);
-		bm->Display_Info(n, bs);
-		try
+		cout << "0ã€é€€å‡ºç³»ç»Ÿ" << endl;
+		cout << "1ã€å½•å…¥å›¾ä¹¦" << endl;
+		cout << "2ã€æŸ¥çœ‹å›¾ä¹¦" << endl;
+		cout << "3ã€å€Ÿ/è¿˜ä¹¦" << endl;
+		cout << endl;
+		cout << "è¯·è¾“å…¥æ•°å­—:" << endl;
+		cin >> choice;
+		switch (choice)
 		{
-			if (is_want_borrow || is_want_return)
-				throw runtime_error("Í¬Ê±½èÊéºÍ»¹Êé¹¦ÄÜÄ¿Ç°²»Ö§³Ö");
-		}
-		catch (runtime_error err)
-		{
-			cout << err.what() << endl;
+			case 0:
+				exit(1);
+				break;
+			case 1:
+			{
+				int Num_0 = 0;
+				cout << "è¯·é—®æ‚¨è¦å½•å…¥å‡ æœ¬ä¹¦ï¼Ÿï¼ˆä¸Šé™10æœ¬ï¼‰" << endl;
+				cin >> Num_0;
+				bm->Add_Book(Num_0, bs);
+				break;
+			}
+		case 2:
+			{
+				string Input_0{};
+				int Num_1 = 0;
+				cout << "è¯·è¾“å…¥ä¹¦å/ISBN" << endl;
+				cout << "åŒåä¹¦ç±å»ºè®®ç”¨ISBNæŸ¥æ‰¾" << endl;
+				cout << "ä¹¦å:" << endl;
+				cin >> Input_0;
+				if (bm->Book_is_exist(Input_0, bs))
+				{
+					Num_1 = bm->Get_Book_SerialNumber(Input_0, bs);
+					bm->Display_Info(Num_1, bs);
+				}
+				else
+				{
+					cout << "æ­¤ä¹¦ä¸å­˜åœ¨" << endl;
+					system("pause");
+					system("cls");
+				}
+				break;
+			}
+		case 3:
+			{
+				string Input_1{};
+				int Num_2 = 0;
+				bool book = 0;
+				cout << "è¯·è¾“å…¥ä¹¦å/ISBN:" << endl;
+				cin >> Input_1;
+				if (bm->Book_is_exist(Input_1, bs))
+				{
+					cout << "å€Ÿä¹¦ä¸º1ï¼Œè¿˜ä¹¦ä¸º0" << endl;
+					cin >> book;
+					Num_2 = bm->Get_Book_SerialNumber(Input_1, bs);
+					if (book)
+					{
+					bm->Borrow_Book(Num_2, bs);
+					}
+					else
+					{
+					bm->Return_Book(Num_2, bs);
+					}
+					system("pause");
+					system("cls");
+				}
+				else
+				{
+					cout << "æ­¤ä¹¦ä¸å­˜åœ¨" << endl;
+					system("pause");
+					system("cls");
+				}
+				break;
+			}
+		default:
 			exit(1);
-		}
-		if (is_want_borrow)
-		{
-			bm->Borrow_Book(n, bs);
-		}
-		if (is_want_return)
-		{
-			bm->Return_Book(n, bs);
+			break;
 		}
 	}
 	delete bm;
