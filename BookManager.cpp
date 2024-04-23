@@ -2,73 +2,88 @@
 #include<iostream>
 #include<string>
 using namespace std;
-void BookManager::Add_Book(BookStorage* bookstorage)
-//Ìí¼ÓÒ»±¾ÊéµÄĞÅÏ¢
+void BookManager::Add_Book( int Book_Number,BookStorage* bookstorage)
+//æ·»åŠ ä¹¦çš„ä¿¡æ¯
 {
-	cout << "ÊéÃû:";
-	cin >> bookstorage->warehouse[0].Book_Name;
-	cout << "×÷Õß:";
-	cin >> bookstorage->warehouse[0].Book_Author;
-	cout << "ISBN:";
-	cin >> bookstorage->warehouse[0].Book_ISBN;
-	cout << "¼Û¸ñ£º";
-	cin >> bookstorage->warehouse[0].Book_Price;
-	bookstorage->warehouse[0].is_borrowed = false;//³õÊ¼×´Ì¬ÎªÃ»ÓĞ½è³ö
-}
-unsigned int BookManager::Get_Book_Number(std::string Name, BookStorage* bookstorage)
-//»ñÈ¡±àºÅ
-{
-	for (int i = 0; i < MAX; i++)
+	int j = this->Get_Storage_Number(bookstorage);
+	for(int i=j;i<j+Book_Number;i++)
 	{
-		if (bookstorage->warehouse[i].Book_Name == Name)
+			cout << "ç¬¬" << i+1 << "æœ¬ä¹¦ï¼š" << endl;
+			cout << "ä¹¦å:";
+			cin >> bookstorage->warehouse[i].Book_Name;
+			cout << "ä½œè€…:";
+			cin >> bookstorage->warehouse[i].Book_Author;
+			cout << "ISBN:";
+			cin >> bookstorage->warehouse[i].Book_ISBN;
+			cout << "ä»·æ ¼:";
+			cin >> bookstorage->warehouse[i].Book_Price;
+			cout << "åº“å­˜:";
+			cin >> bookstorage->warehouse[i].Book_Number_In_Storage;
+	}
+	system("pause");
+	system("cls");//æ¸…å±
+}
+int BookManager::Get_Book_SerialNumber(std::string Name, BookStorage* bookstorage)
+//è·å–ç¼–å·
+{
+	for ( int i = 0; i < MAX; i++)
+	{
+		if (bookstorage->warehouse[i].Book_Name == Name||bookstorage->warehouse[i].Book_ISBN==Name)
 		{
 			return i;
 		}
 	}
 }
-void BookManager::Display_Info(unsigned int n,BookStorage* bookstorage)
-//Õ¹Ê¾ÊéµÄĞÅÏ¢
+void BookManager::Display_Info( int n,BookStorage* bookstorage)
+//å±•ç¤ºä¹¦çš„ä¿¡æ¯
 {
-	cout <<"ÊéÃû:" << bookstorage->warehouse[n].Book_Name << endl;
-	cout <<"×÷Õß:" << bookstorage->warehouse[n].Book_Author << endl;
+	cout <<"ä¹¦å:" << bookstorage->warehouse[n].Book_Name << endl;
+	cout <<"ä½œè€…:" << bookstorage->warehouse[n].Book_Author << endl;
 	cout << "ISBN:" << bookstorage->warehouse[n].Book_ISBN << endl;
-	cout << "¼Û¸ñ:" << bookstorage->warehouse[n].Book_Price << endl;
+	cout << "ä»·æ ¼:" << bookstorage->warehouse[n].Book_Price << endl;
+	cout << "åº“å­˜ï¼š" << bookstorage->warehouse[n].Book_Number_In_Storage <<"æœ¬" << endl;
+	system("pause");
+	system("cls");
 }
-bool BookManager::Book_is_exist_1(std::string Name, BookStorage* bookstorage)
-//ÅĞ¶ÏÊéµÄ´æÔÚ£¨ÊéÃû£©
+bool BookManager::Book_is_exist(std::string Input, BookStorage* bookstorage)
+//åˆ¤æ–­ä¹¦çš„å­˜åœ¨ï¼ˆä¹¦åï¼‰
 {
 	for(int i=0;i<MAX;i++)
 	{ 
-		if (bookstorage->warehouse[i].Book_Name == Name)
+		if (bookstorage->warehouse[i].Book_Name == Input||bookstorage->warehouse[i].Book_ISBN==Input)
 		{
 			return true;
 		}
-		else
-		{
-			return false;
-		}
+		//æŸ¥æ‰¾ç¼–å·
+	}
+	return false;
+}
+void BookManager::Borrow_Book( int n, BookStorage* bookstorage)
+{
+	if (bookstorage->warehouse[n].Book_Number_In_Storage == 0)
+	{
+		cout << "åº“å­˜ä¸è¶³ï¼Œå€Ÿä¹¦å¤±è´¥" << endl;
+	}
+	else
+	{
+		bookstorage->warehouse[n].Book_Number_In_Storage--;
+		cout << "å€Ÿä¹¦æˆåŠŸ" << endl;
+		cout << "è¿˜æœ‰" << bookstorage->warehouse[n].Book_Number_In_Storage << "æœ¬" << endl;
 	}
 }
-bool BookManager::Book_is_exist_2(std::string ISBN, BookStorage* bookstorage)
-//ÅĞ¶ÏÊéµÄ´æÔÚ£¨ISBN£©
+void BookManager::Return_Book( int n, BookStorage* bookstorage)
+{
+	bookstorage->warehouse[n].Book_Number_In_Storage++;
+	cout << "è¿˜ä¹¦æˆåŠŸ" << endl;
+	cout << "è¿˜æœ‰" << bookstorage->warehouse[n].Book_Number_In_Storage << "æœ¬" << endl;
+}
+int BookManager::Get_Storage_Number(BookStorage* bookstorage)
 {
 	for (int i = 0; i < MAX; i++)
 	{
-		if (bookstorage->warehouse[i].Book_ISBN == ISBN)
+		if (bookstorage->warehouse[i].Book_Name == "")
 		{
-			return true;
-		}
-		else
-		{
-			return false;
+			return i;
 		}
 	}
-}
-void BookManager::Borrow_Book(unsigned int n, BookStorage* bookstorage)
-{
-	bookstorage->warehouse[n].is_borrowed = true;
-}
-void BookManager::Return_Book(unsigned int n, BookStorage* bookstorage)
-{
-	bookstorage->warehouse[n].is_borrowed = false;
 }
