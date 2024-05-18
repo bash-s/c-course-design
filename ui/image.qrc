@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="return">
+    <file>refresh.jpg</file>
+    <file>return.jpg</file>
+  </qresource>
+</RCC>
